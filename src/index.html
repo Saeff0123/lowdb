@@ -9,6 +9,30 @@
 </head>
 
 <body>
+const lodashId = require('lodash-id')
+const FileSync = require('lowdb/adapters/FileSync')
+
+const adapter = new FileSync('db.json')
+const db = low(adapter)
+
+db._.mixin(lodashId)
+
+// We need to set some default values, if the collection does not exist yet
+// We also can store our collection
+const collection = db
+  .defaults({ posts: [] })
+  .get('posts')
+
+// Insert a new post...
+const newPost = collection
+  .insert({ title: 'low!' })
+  .write()
+
+// ...and retrieve it using its id
+const post = collection
+  .getById(newPost.id)
+  .value()
+How to create custom adaptor
     <p>hi</>
 
 </body>
